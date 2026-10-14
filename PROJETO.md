@@ -265,7 +265,7 @@ A chave *publishable* pode ficar no navegador, porque quem protege os dados é o
 9. [x] ~~Upload de foto/vídeo~~ → botão "Ver no YouTube" (busca pelo nome do exercício)
 10. [x] CRUD de treinos, vinculando exercícios e dia da semana
 11. [x] Tela "modo academia": cartões que abrem/fecham, editar carga, concluir exercício (✓) e finalizar treino
-12. [ ] Publicar na Vercel (antes: colocar o projeto no Git/GitHub)
+12. [ ] Publicar na Vercel (Git/GitHub ✅ feito; `vercel.json` faz as rotas funcionarem ao recarregar)
 13. [ ] Ajustes visuais e responsividade (tema escuro ✅ feito: cinza escuro + verde #00E676, botão ☀️/🌙)
 
 ## 8. Convenções
@@ -279,4 +279,5 @@ A chave *publishable* pode ficar no navegador, porque quem protege os dados é o
 - **Cores:** usar os nomes do tema (`bg-primary`, `bg-card`, `text-muted`...) definidos no
   `index.css`, nunca cores fixas (`bg-blue-600`), para funcionar nos dois modos
 - Mobile first: o uso principal é no celular, na academia
-- Commits pequenos, um por etapa do roteiro (o projeto ainda **não** está no Git)
+- Commits pequenos, um por etapa do roteiro
+- Repositório (privado): https://github.com/douglasonunesinfo/my-workout
