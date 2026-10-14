@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* O modo noturno é ligado pela classe "dark" na tag <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Cores do app. Cada cor vira uma classe do Tailwind:
+  --color-primary  →  bg-primary, text-primary, border-primary...
+  Assim o código usa "bg-card" e não precisa repetir "dark:" em todo lugar.
+*/
+
+/* Modo diurno (padrão) */
+@theme {
+  --color-page: #f8fafc;          /* fundo da página */
+  --color-card: #ffffff;          /* fundo dos cartões e campos */
+  --color-line: #e2e8f0;          /* bordas */
+  --color-hover: #f1f5f9;         /* fundo ao passar o mouse */
+  --color-ink: #0f172a;           /* texto principal */
+  --color-muted: #64748b;         /* texto secundário */
+  --color-header: #0f172a;        /* cabeçalho */
+  --color-primary: #2563eb;       /* botões e destaques (azul) */
+  --color-primary-hover: #1d4ed8;
+  --color-on-primary: #ffffff;    /* texto em cima do botão */
+  --color-danger: #dc2626;        /* excluir, erros */
+  --color-danger-soft: #fef2f2;   /* fundo das mensagens de erro */
+  --color-youtube: #ff0033;       /* vermelho do YouTube (igual nos dois modos) */
+}
+
+/* Modo noturno: cinza bem escuro com verde (#00E676) */
+.dark {
+  --color-page: #121212;
+  --color-card: #1f1f1f;
+  --color-line: #2c2c2c;
+  --color-hover: #2a2a2a;
+  --color-ink: #f2f2f2;
+  --color-muted: #a3a3a3;
+  --color-header: #121212;
+  --color-primary: #00e676;       /* verde */
+  --color-primary-hover: #33eb91;
+  --color-on-primary: #00210f;    /* texto verde-escuro em cima do verde */
+  --color-danger: #ff4d4d;
+  --color-danger-soft: #2a0a0a;
+}
+
+/* Brilho dos botões (desligado; para ligar no noturno, troque o none do .dark) */
+:root {
+  --glow: none;
+}
+
+.dark {
+  --glow: none; /* ex. com brilho: 0 0 14px rgb(0 230 118 / 0.4) */
+  color-scheme: dark; /* barras de rolagem e campos escuros */
+}
+
+/* Classe "glow" para usar nos botões */
+@utility glow {
+  box-shadow: var(--glow);
+}
+
+/* Fundo da página inteira (inclusive ao "puxar" a tela no celular) */
+body {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
