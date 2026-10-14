@@ -25,7 +25,7 @@ rotas, formulários com validação, banco de dados na nuvem, login e deploy.
 | Login             | Supabase Auth (e-mail e senha)                | ✅ configurado  |
 | Vídeos            | Busca do YouTube (link, sem API)              | ✅ feito        |
 | ~~Fotos e vídeos~~ | ~~Supabase Storage~~ (bucket criado, sem uso por enquanto) | ⏸️ pausado |
-| Hospedagem        | Vercel                                        | ⬜ a configurar |
+| Hospedagem        | Vercel                                        | ✅ publicado    |
 | ~~Persistência local~~ | ~~Dexie (IndexedDB)~~, substituído pelo Supabase | 🗑️ removido |
 
 ### Como as peças se conectam
@@ -59,7 +59,7 @@ rotas, formulários com validação, banco de dados na nuvem, login e deploy.
 - [x] Tela de **visualização do treino** para usar na academia (mobile first): cartões que abrem/fecham,
   editar carga, **concluir exercício** (✓), barra de progresso e **finalizar treino**
 - [x] **Modo diurno e noturno** (botão ☀️/🌙; noturno em cinza escuro + verde `#00E676`)
-- [ ] App publicado na internet (Vercel)
+- [x] App publicado na internet: https://my-workout-ten-gilt.vercel.app
 
 ### Versão 2 (ideias)
 - [ ] Registrar treino realizado no banco (histórico de cargas). Hoje os ✓ do dia ficam só no
@@ -265,7 +265,7 @@ A chave *publishable* pode ficar no navegador, porque quem protege os dados é o
 9. [x] ~~Upload de foto/vídeo~~ → botão "Ver no YouTube" (busca pelo nome do exercício)
 10. [x] CRUD de treinos, vinculando exercícios e dia da semana
 11. [x] Tela "modo academia": cartões que abrem/fecham, editar carga, concluir exercício (✓) e finalizar treino
-12. [ ] Publicar na Vercel (Git/GitHub ✅ feito; `vercel.json` faz as rotas funcionarem ao recarregar)
+12. [x] Publicar na Vercel: https://my-workout-ten-gilt.vercel.app (publica sozinho a cada `git push`)
 13. [ ] Ajustes visuais e responsividade (tema escuro ✅ feito: cinza escuro + verde #00E676, botão ☀️/🌙)
 
 ## 8. Convenções
