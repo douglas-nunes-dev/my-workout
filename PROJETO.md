@@ -11,22 +11,54 @@ celular, na academia, com login.
 **Objetivos de aprendizado:** React 19, TypeScript, Vite, Tailwind CSS 4,
 rotas, formulários com validação, banco de dados na nuvem, login e deploy.
 
-## 2. Stack
+## 2. Stack (tecnologias usadas)
 
-| Camada            | Tecnologia                                    | Status          |
-| ----------------- | --------------------------------------------- | --------------- |
-| Build / Dev       | Vite                                          | ✅ instalado    |
-| UI                | React 19 + TypeScript                         | ✅ instalado    |
-| Estilo            | Tailwind CSS 4 (`@tailwindcss/vite`)          | ✅ configurado  |
-| Rotas             | React Router                                  | ✅ instalado    |
-| Formulários       | React Hook Form + Zod (`@hookform/resolvers`) | ✅ instalado    |
-| Ícones            | lucide-react                                  | ✅ instalado    |
-| Banco de dados    | Supabase (PostgreSQL)                         | ✅ configurado  |
-| Login             | Supabase Auth (e-mail e senha)                | ✅ configurado  |
-| Vídeos            | Busca do YouTube (link, sem API)              | ✅ feito        |
-| ~~Fotos e vídeos~~ | ~~Supabase Storage~~ (bucket criado, sem uso por enquanto) | ⏸️ pausado |
-| Hospedagem        | Vercel                                        | ✅ publicado    |
-| ~~Persistência local~~ | ~~Dexie (IndexedDB)~~, substituído pelo Supabase | 🗑️ removido |
+Versões instaladas em outubro/2026 (a lista exata fica no `package.json` e no `package-lock.json`).
+
+### Front-end (o app que roda no navegador)
+
+| Tecnologia | Versão | Para que serve |
+| --- | --- | --- |
+| **React** (`react`, `react-dom`) | 19.3 | Monta as telas com componentes |
+| **TypeScript** | 6.0 | JavaScript com tipos; avisa erros antes de rodar |
+| **Tailwind CSS** (`tailwindcss`, `@tailwindcss/vite`) | 4.3 | Estilo com classes prontas (`bg-card`, `p-4`...) e tema diurno/noturno |
+| **React Router** (`react-router`) | 8.4 | Rotas: troca de tela pela URL (`/treinos/:id`) |
+| **React Hook Form** (`react-hook-form`) | 7.90 | Controla os campos dos formulários |
+| **Zod** (`zod`) | 4.6 | Regras de validação dos formulários (pasta `schemas/`) |
+| **@hookform/resolvers** | 5.9 | Liga o Zod ao React Hook Form |
+| **lucide-react** | 1.57 | Ícones (lápis, lixeira, ✓...) |
+| **@supabase/supabase-js** | 2.117 | Biblioteca que conversa com o Supabase (login e dados) |
+| **localStorage** (do próprio navegador) | — | Guarda o tema escolhido e os ✓ do treino do dia |
+
+### Back-end e nuvem (serviços online)
+
+| Tecnologia | Para que serve |
+| --- | --- |
+| **Supabase** | "Backend pronto": API automática, login e regras de segurança |
+| ↳ **PostgreSQL** | O banco de dados (relacional, SQL; parente do MySQL) |
+| ↳ **Supabase Auth** | Login com e-mail e senha |
+| ↳ **RLS** (Row Level Security) | Cada usuário só vê e altera os próprios dados |
+| **Vercel** | Hospeda o site; publica sozinho a cada `git push` |
+| **YouTube** (só link de busca, sem API) | Botão "Ver no YouTube" de cada exercício |
+
+### Ferramentas de desenvolvimento
+
+| Tecnologia | Versão | Para que serve |
+| --- | --- | --- |
+| **Node.js** | 24 | Roda as ferramentas abaixo no computador |
+| **npm** | 11 | Instala as bibliotecas (`npm install`) e roda os scripts (`npm run dev`) |
+| **Vite** (+ `@vitejs/plugin-react`) | 8.3 | Servidor de desenvolvimento (`npm run dev`) e build de produção |
+| **ESLint** (+ `typescript-eslint`, plugins `react-hooks` e `react-refresh`) | 10.12 | Aponta erros e más práticas no código (`npm run lint`) |
+| **@types/react**, **@types/react-dom**, **@types/node** | — | Tipos do TypeScript para essas bibliotecas |
+| **Git** + **GitHub** | — | Histórico do código e sincronização entre computadores |
+| **VS Code** + **Claude Code** | — | Editor e assistente |
+
+### Usadas antes ou pausadas
+
+| Tecnologia | Situação |
+| --- | --- |
+| ~~Dexie (IndexedDB)~~ | 🗑️ Removido: guardava os dados no navegador; trocado pelo Supabase |
+| ~~Supabase Storage~~ | ⏸️ Pausado: bucket `exercise-media` criado, sem uso (ideia da versão 2) |
 
 ### Como as peças se conectam
 
