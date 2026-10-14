@@ -3,7 +3,7 @@
 ## 1. Visão geral
 
 Aplicação web pessoal para cadastrar e consultar minhas séries de musculação,
-com fotos e vídeos de cada exercício para lembrar a execução correta.
+com atalho para vídeos de execução de cada exercício no YouTube.
 
 Os dados ficam **na nuvem (Supabase)**: cadastro no computador e consulto no
 celular, na academia, com login.
@@ -35,15 +35,16 @@ rotas, formulários com validação, banco de dados na nuvem, login e deploy.
 ┌───────────────────────┐        ┌──────────────────────────────┐
 │  App React (Vercel)   │ ─────► │  Auth     → login            │
 │                       │        │  Database → tabelas (dados)  │
-│ @supabase/supabase-js │        │  Storage  → fotos e vídeos   │
+│ @supabase/supabase-js │        │  Storage  → (sem uso ainda)  │
 └───────────────────────┘        └──────────────────────────────┘
 ```
 
+O código fica no GitHub; a cada `git push` a Vercel publica a nova versão sozinha.
+
 ### Limites do plano gratuito do Supabase
 - Banco: 500 MB (sobra muito para texto)
-- Storage: **1 GB no total** e **até 50 MB por arquivo**
-- Dica: preferir fotos e vídeos curtos (poucos segundos); para vídeos longos,
-  usar link do YouTube
+- Storage: **1 GB no total** e **até 50 MB por arquivo** (só importa se um dia
+  usarmos upload de fotos/vídeos)
 - Projetos gratuitos **pausam após 7 dias sem uso**; basta reativar no painel
 
 ## 3. Funcionalidades
@@ -103,14 +104,14 @@ where email = 'douglasonunes@gmail.com';
 alterar as linhas em que `user_id` é o dele. Mesmo que alguém pegue a chave
 pública do app, não consegue ler os dados de outra pessoa.
 
-**Fotos e vídeos:** ficam no bucket privado `exercise-media`, no caminho
-`<id do usuário>/<id do exercício>/<arquivo>`. A tabela `exercise_media` guarda
-só o caminho (`file_path`). Para exibir, o app gera um link temporário
-(*signed URL*).
+**Ao excluir:** excluir um exercício o remove junto dos treinos (`on delete cascade`).
+Excluir um treino apaga junto a lista de exercícios dele.
 
-**Ao excluir:** excluir um exercício apaga junto suas mídias (linhas) e o remove
-dos treinos (`on delete cascade`). Os **arquivos** do Storage precisam ser
-apagados pelo app antes.
+**Fotos e vídeos (criado, mas ainda sem uso no app):** a tabela `exercise_media` e o
+bucket privado `exercise-media` já existem para a ideia de upload da versão 2.
+Plano: arquivos em `<id do usuário>/<id do exercício>/<arquivo>`, a tabela guarda
+só o caminho (`file_path`) e o app exibe com um link temporário (*signed URL*).
+Nesse caso, ao excluir um exercício, o app precisa apagar os arquivos antes.
 
 ### Tipos TypeScript
 
@@ -165,7 +166,7 @@ interface WorkoutExercise {
 | `/treinos/:id/editar`    | Editar treino                        |
 | `/exercicios`            | Biblioteca de exercícios             |
 | `/exercicios/novo`       | Cadastrar exercício                  |
-| `/exercicios/:id`        | Detalhe do exercício (mídia)         |
+| `/exercicios/:id`        | Detalhe do exercício (+ Ver no YouTube) |
 | `/exercicios/:id/editar` | Editar exercício                     |
 
 Se não estiver logado, qualquer rota redireciona para `/login`.
@@ -202,7 +203,7 @@ Progresso                         3 de 7
      (↻) Séries: 4
      Repetições 10–15 | Carga 8 kg | Intervalo -
      (      ✓ Concluir exercício      )
-     (      ✏️ Editar carga            )
+     ( ✏️ Editar carga ) ( ▶ Ver no YouTube )
 [5]  Desenvolvimento máquina/halteres  ⌄
      3x 8–12
 ──────────────────────────────────────
@@ -210,8 +211,7 @@ Progresso                         3 de 7
 ```
 
 Ao concluir um exercício, o próximo abre sozinho. Os ✓ do dia ficam salvos no
-aparelho (se a página recarregar, não se perdem). "Ver no YouTube" fica ao lado de
-"Editar carga". No futuro, o quadrado com o
+aparelho (se a página recarregar, não se perdem). No futuro, o quadrado com o
 número pode mostrar a miniatura de um vídeo fixado (ideia da versão 2).
 
 ## 6. Estrutura de pastas
@@ -234,6 +234,8 @@ src/
 ├── App.tsx          # rotas
 ├── index.css        # Tailwind + cores do tema (diurno e noturno)
 └── main.tsx
+index.html           # inclui o script que aplica o tema antes da página aparecer
+vercel.json          # faz as rotas funcionarem ao recarregar a página na Vercel
 .env.local           # chaves do Supabase (NÃO vai para o Git)
 ```
 
@@ -246,6 +248,22 @@ VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxx
 
 A chave *publishable* pode ficar no navegador, porque quem protege os dados é o RLS.
 **Nunca** usar a chave *secret* no app.
+
+As mesmas duas variáveis estão cadastradas na Vercel (Settings → Environment Variables).
+Se mudar alguma, é preciso fazer **Redeploy** lá.
+
+### Rodar o projeto em outro computador
+
+```bash
+git clone https://github.com/douglasonunesinfo/my-workout.git
+cd my-workout
+npm install
+# criar o .env.local com as duas variáveis acima (ele não vem do GitHub)
+npm run dev
+```
+
+No dia a dia: `git pull` antes de começar e `git push` ao terminar
+(o push também publica na Vercel).
 
 ## 7. Roteiro de implementação
 
