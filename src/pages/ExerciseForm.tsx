@@ -6,7 +6,12 @@ import { useNavigate, useParams } from 'react-router'
 import { PageTitle } from '../components/PageTitle'
 import { muscleGroups } from '../constants/muscleGroups'
 import { exerciseSchema, type ExerciseFormData } from '../schemas/exerciseSchema'
-import { createExercise, getExercise, updateExercise } from '../services/exercises'
+import {
+  createExercise,
+  exerciseNameExists,
+  getExercise,
+  updateExercise,
+} from '../services/exercises'
 
 const inputClass =
   'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-none'
@@ -25,6 +30,7 @@ export function ExerciseForm() {
     handleSubmit,
     reset,
     setFocus,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ExerciseFormData>({
     resolver: zodResolver(exerciseSchema),
@@ -53,11 +59,24 @@ export function ExerciseForm() {
     loadExercise()
   }, [id, reset])
 
+  // Se o nome já existe, mostra o erro no campo e devolve true
+  async function isDuplicateName(name: string) {
+    const exists = await exerciseNameExists(name, id)
+    if (exists) {
+      setError('name', { message: 'Já existe um exercício com esse nome' })
+      setFocus('name')
+    }
+    return exists
+  }
+
   // Botão "Salvar": salva e abre a tela do exercício
   async function onSubmit(data: ExerciseFormData) {
     setErrorMessage('')
     setSuccessMessage('')
     try {
+      if (await isDuplicateName(data.name)) {
+        return
+      }
       if (id) {
         await updateExercise(id, data)
         navigate(`/exercicios/${id}`)
@@ -76,6 +95,9 @@ export function ExerciseForm() {
     setErrorMessage('')
     setSuccessMessage('')
     try {
+      if (await isDuplicateName(data.name)) {
+        return
+      }
       await createExercise(data)
       reset({ name: '', muscle_group: data.muscle_group, notes: '' })
       setSuccessMessage(`"${data.name}" salvo! Cadastre o próximo.`)
