@@ -84,6 +84,12 @@ export function WorkoutDetail() {
     return 'Exercício removido'
   }
 
+  // Cardio (esteira, bicicleta...) é exibido diferente: só a duração
+  function isCardio(exerciseId: string) {
+    const exercise = exercises.find((item) => item.id === exerciseId)
+    return exercise?.muscle_group === 'Cardio'
+  }
+
   // Abre o cartão clicado; se já estava aberto, fecha
   function handleToggle(itemId: string) {
     if (openItemId === itemId) {
@@ -267,6 +273,7 @@ export function WorkoutDetail() {
             item={item}
             number={index + 1}
             name={getExerciseName(item.exercise_id)}
+            isCardio={isCardio(item.exercise_id)}
             isOpen={openItemId === item.id}
             isCompleted={completedIds.includes(item.id)}
             onToggle={() => handleToggle(item.id)}
@@ -305,6 +312,7 @@ interface ExerciseCardProps {
   item: WorkoutExercise
   number: number // posição na lista: 1, 2, 3...
   name: string
+  isCardio: boolean // true = mostra só a duração (campo "reps"), sem séries e carga
   isOpen: boolean
   isCompleted: boolean
   onToggle: () => void
@@ -317,6 +325,7 @@ function ExerciseCard({
   item,
   number,
   name,
+  isCardio,
   isOpen,
   isCompleted,
   onToggle,
@@ -337,6 +346,12 @@ function ExerciseCard({
   let restLabel = '-'
   if (item.rest_seconds !== null) {
     restLabel = `${item.rest_seconds}s`
+  }
+
+  // Resumo embaixo do nome: "3x 10-12", ou só "20 min" no cardio
+  let summary = `${item.sets}x ${item.reps}`
+  if (isCardio) {
+    summary = item.reps
   }
 
   // Nome do exercício: acinzentado quando concluído
@@ -390,9 +405,7 @@ function ExerciseCard({
         <span className="flex-1">
           <span className={nameClass}>{name}</span>
           {!isCompleted && !isOpen && (
-            <span className="block text-sm text-muted">
-              {item.sets}x {item.reps}
-            </span>
+            <span className="block text-sm text-muted">{summary}</span>
           )}
         </span>
         {/* Selo verde de concluído */}
@@ -405,21 +418,34 @@ function ExerciseCard({
       {/* Conteúdo que aparece quando o cartão está aberto */}
       {isOpen && (
         <div className="mt-3 space-y-2">
-          {/* Séries */}
-          <div className="flex items-center gap-3 rounded-xl bg-hover p-3">
-            <IconCircle>
-              <RotateCw size={20} />
-            </IconCircle>
-            <span className="flex-1">Séries:</span>
-            <span className="text-lg font-semibold">{item.sets}</span>
-          </div>
+          {isCardio ? (
+            // Cardio: só a duração (guardada no campo "reps")
+            <div className="flex items-center gap-3 rounded-xl bg-hover p-3">
+              <IconCircle>
+                <Timer size={20} />
+              </IconCircle>
+              <span className="flex-1">Duração:</span>
+              <span className="text-lg font-semibold">{item.reps}</span>
+            </div>
+          ) : (
+            <>
+              {/* Séries */}
+              <div className="flex items-center gap-3 rounded-xl bg-hover p-3">
+                <IconCircle>
+                  <RotateCw size={20} />
+                </IconCircle>
+                <span className="flex-1">Séries:</span>
+                <span className="text-lg font-semibold">{item.sets}</span>
+              </div>
 
-          {/* Repetições, carga e intervalo */}
-          <div className="grid grid-cols-3 gap-2">
-            <InfoBox icon={<Repeat size={20} />} label="Repetições" value={item.reps} />
-            <InfoBox icon={<Dumbbell size={20} />} label="Carga" value={weightLabel} />
-            <InfoBox icon={<Timer size={20} />} label="Intervalo" value={restLabel} />
-          </div>
+              {/* Repetições, carga e intervalo */}
+              <div className="grid grid-cols-3 gap-2">
+                <InfoBox icon={<Repeat size={20} />} label="Repetições" value={item.reps} />
+                <InfoBox icon={<Dumbbell size={20} />} label="Carga" value={weightLabel} />
+                <InfoBox icon={<Timer size={20} />} label="Intervalo" value={restLabel} />
+              </div>
+            </>
+          )}
 
           {/* Concluir exercício (ou desfazer) */}
           {isCompleted ? (
@@ -442,8 +468,11 @@ function ExerciseCard({
             </button>
           )}
 
+          {/* Cardio não tem carga: só o botão do YouTube */}
+          {isCardio && <YoutubeButton exerciseName={name} />}
+
           {/* Editar carga */}
-          {isEditingWeight ? (
+          {!isCardio && (isEditingWeight ? (
             <div className="rounded-xl bg-hover p-3">
               <label htmlFor={`weight-${item.id}`} className="mb-1 block text-sm font-medium">
                 Carga (kg)
@@ -489,7 +518,7 @@ function ExerciseCard({
               </button>
               <YoutubeButton exerciseName={name} />
             </div>
-          )}
+          ))}
         </div>
       )}
     </li>

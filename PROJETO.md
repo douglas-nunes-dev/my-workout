@@ -84,6 +84,9 @@ O código fica no GitHub; a cada `git push` a Vercel publica a nova versão sozi
 ### MVP (versão 1)
 - [x] **Login** com e-mail e senha (só eu uso o app)
 - [x] Cadastrar, editar e excluir **exercícios** (nome, grupo muscular, observações), com botão "Salvar e cadastrar outro"
+- [x] **Não permite exercícios com o mesmo nome** (sem diferenciar maiúsculas/minúsculas), para não
+  excluir o exercício errado por engano
+- [x] **Cardio** no fim do treino: grupo muscular "Cardio"; na tela do treino mostra só a duração
 - [x] Botão **"Ver no YouTube"** em cada exercício: abre a busca do YouTube pelo nome do exercício
   (no lugar do upload de fotos/vídeos, que daria muito trabalho manual)
 - [x] Cadastrar **treinos** (ex.: A1, B1, C1) com uma lista de exercícios e o **dia da semana**
@@ -135,6 +138,15 @@ where email = 'douglasonunes@gmail.com';
 **Segurança (RLS, Row Level Security):** o Postgres só deixa cada usuário ver e
 alterar as linhas em que `user_id` é o dele. Mesmo que alguém pegue a chave
 pública do app, não consegue ler os dados de outra pessoa.
+
+**Nome do exercício sem repetição:** antes de salvar, o app procura outro exercício com o
+mesmo nome usando `ilike` (o `like` que não diferencia maiúsculas de minúsculas), sem
+curinga `%`: "Supino" não é bloqueado por existir "Supino reto". Na edição, o próprio
+exercício não conta. A regra está só no app (em `services/exercises.ts`), não no banco.
+
+**Cardio:** não tem tabela própria. É um exercício com grupo muscular `Cardio`, adicionado
+por último no treino dos dias em que é feito, com **1 série** e a **duração no campo
+repetições** (ex.: "20 min" ou "20 min, inclinação 8").
 
 **Ao excluir:** excluir um exercício o remove junto dos treinos (`on delete cascade`).
 Excluir um treino apaga junto a lista de exercícios dele.
@@ -238,12 +250,17 @@ Progresso                         3 de 7
      ( ✏️ Editar carga ) ( ▶ Ver no YouTube )
 [5]  Desenvolvimento máquina/halteres  ⌄
      3x 8–12
+[8]  Esteira                           ⌃   ◄ cardio (aberto)
+     (⏱) Duração: 20 min
+     (      ✓ Concluir exercício      )
+     (        ▶ Ver no YouTube        )
 ──────────────────────────────────────
 (         🏁 Finalizar treino         )   ◄ barra fixa
 ```
 
 Ao concluir um exercício, o próximo abre sozinho. Os ✓ do dia ficam salvos no
-aparelho (se a página recarregar, não se perdem). No futuro, o quadrado com o
+aparelho (se a página recarregar, não se perdem). Exercícios do grupo **Cardio** mostram
+só a duração (sem séries, carga, intervalo e "Editar carga"). No futuro, o quadrado com o
 número pode mostrar a miniatura de um vídeo fixado (ideia da versão 2).
 
 ## 6. Estrutura de pastas
@@ -254,7 +271,7 @@ supabase/
 └── 002-dia-da-semana.sql   # alteração: coluna day_of_week
 src/
 ├── components/      # Layout, PageTitle, RequireAuth (porteiro do login), ThemeToggle (☀️/🌙), YoutubeButton
-├── constants/       # listas fixas (grupos musculares, dias da semana)
+├── constants/       # listas fixas (grupos musculares, incluindo Cardio; dias da semana)
 ├── pages/           # uma tela por arquivo
 ├── lib/
 │   └── supabase.ts  # conexão com o Supabase
@@ -317,6 +334,8 @@ No dia a dia: `git pull` antes de começar e `git push` ao terminar
 11. [x] Tela "modo academia": cartões que abrem/fecham, editar carga, concluir exercício (✓) e finalizar treino
 12. [x] Publicar na Vercel: https://my-workout-ten-gilt.vercel.app (publica sozinho a cada `git push`)
 13. [ ] Ajustes visuais e responsividade (tema escuro ✅ feito: cinza escuro + verde #00E676, botão ☀️/🌙)
+14. [x] Bloquear exercícios com nome repetido (`ilike` antes de salvar)
+15. [x] Cardio no fim do treino (grupo "Cardio", exibe só a duração)
 
 ## 8. Convenções
 

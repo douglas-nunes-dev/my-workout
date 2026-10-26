@@ -11,4 +11,5 @@ export const muscleGroups = [
   'Glúteos',
   'Panturrilha',
   'Abdômen',
+  'Cardio', // esteira, bicicleta... No treino, mostra só a duração
 ]
