@@ -212,6 +212,7 @@ interface WorkoutExercise {
 | `/exercicios/novo`       | Cadastrar exercício                  |
 | `/exercicios/:id`        | Detalhe do exercício (+ Ver no YouTube) |
 | `/exercicios/:id/editar` | Editar exercício                     |
+| `*` (qualquer outra)     | Página não encontrada                |
 
 Se não estiver logado, qualquer rota redireciona para `/login`.
 
@@ -304,7 +305,7 @@ Se mudar alguma, é preciso fazer **Redeploy** lá.
 ### Rodar o projeto em outro computador
 
 ```bash
-git clone https://github.com/douglasonunesinfo/my-workout.git
+git clone https://github.com/douglas-nunes-dev/my-workout.git
 cd my-workout
 npm install
 # criar o .env.local com as duas variáveis acima (ele não vem do GitHub)
@@ -349,4 +350,4 @@ No dia a dia: `git pull` antes de começar e `git push` ao terminar
   `index.css`, nunca cores fixas (`bg-blue-600`), para funcionar nos dois modos
 - Mobile first: o uso principal é no celular, na academia
 - Commits pequenos, um por etapa do roteiro
-- Repositório (privado): https://github.com/douglasonunesinfo/my-workout
+- Repositório (privado): https://github.com/douglas-nunes-dev/my-workout
