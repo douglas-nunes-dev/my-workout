@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabase'
 import { loginSchema, type LoginFormData } from '../schemas/loginSchema'
 
 const inputClass =
-  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-none'
+  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-hidden'
 
 export function Login() {
   const session = useSession()

@@ -57,8 +57,14 @@
   box-shadow: var(--glow);
 }
 
-/* Fundo da página inteira (inclusive ao "puxar" a tela no celular) */
-body {
-  background-color: var(--color-page);
-  color: var(--color-ink);
+/*
+  Fundo da página inteira (inclusive ao "puxar" a tela no celular).
+  Fica no @layer base (como manda a documentação) para que as classes
+  do Tailwind possam sobrescrever esses estilos.
+*/
+@layer base {
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+  }
 }

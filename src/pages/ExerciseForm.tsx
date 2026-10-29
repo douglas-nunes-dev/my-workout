@@ -14,7 +14,7 @@ import {
 } from '../services/exercises'
 
 const inputClass =
-  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-none'
+  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-hidden'
 
 export function ExerciseForm() {
   const { id } = useParams()

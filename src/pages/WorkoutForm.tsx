@@ -23,7 +23,7 @@ import {
 import type { Exercise, Workout } from '../types'
 
 const inputClass =
-  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-none'
+  'w-full rounded-lg border border-line bg-card px-3 py-2 focus:border-primary focus:outline-hidden'
 const labelClass = 'mb-1 block text-sm font-medium'
 const smallLabelClass = 'mb-1 block text-xs text-muted'
 const errorClass = 'mt-1 text-sm text-danger'
